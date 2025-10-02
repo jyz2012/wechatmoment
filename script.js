@@ -2,8 +2,11 @@ class WechatMomentGenerator {
     constructor() {
         this.template = document.getElementById('wechat-moment-template');
         this.uploadedImages = []; // 存储所有上传的图片
+        this.comments = []; // 存储所有评论
+        this.likes = []; // 存储所有点赞
         this.initEventListeners();
         this.setDefaultAvatar();
+        this.updateInteractionsVisibility(); // 初始化时隐藏互动区域
     }
     
     // 设置默认头像
@@ -98,6 +101,234 @@ class WechatMomentGenerator {
         this.uploadedImages = [];
         this.updateImagePreview();
         this.updatePreviewImages();
+    }
+    
+    // 添加评论
+    addComment(nickname, content) {
+        if (!nickname.trim() || !content.trim()) {
+            alert('请填写评论者昵称和评论内容');
+            return;
+        }
+        
+        const comment = {
+            id: Date.now() + Math.random(),
+            nickname: nickname.trim(),
+            content: content.trim()
+        };
+        
+        this.comments.push(comment);
+        this.updateCommentsPreview();
+        this.updateMomentComments();
+        
+        // 清空输入框
+        document.getElementById('comment-nickname').value = '';
+        document.getElementById('comment-content').value = '';
+    }
+    
+    // 移除评论
+    removeComment(commentId) {
+        this.comments = this.comments.filter(comment => comment.id !== commentId);
+        this.updateCommentsPreview();
+        this.updateMomentComments();
+    }
+    
+    // 清空所有评论
+    clearAllComments() {
+        this.comments = [];
+        this.updateCommentsPreview();
+        this.updateMomentComments();
+    }
+    
+    // 添加点赞
+    addLike(nickname) {
+        if (!nickname.trim()) {
+            alert('请填写点赞者昵称');
+            return;
+        }
+        
+        // 检查是否已经点赞过
+        if (this.likes.some(like => like.nickname === nickname.trim())) {
+            alert('该用户已经点赞过了');
+            return;
+        }
+        
+        const like = {
+            id: Date.now() + Math.random(),
+            nickname: nickname.trim()
+        };
+        
+        this.likes.push(like);
+        this.updateLikesPreview();
+        this.updateMomentLikes();
+        
+        // 清空输入框
+        document.getElementById('like-nickname').value = '';
+    }
+    
+    // 移除点赞
+    removeLike(likeId) {
+        this.likes = this.likes.filter(like => like.id !== likeId);
+        this.updateLikesPreview();
+        this.updateMomentLikes();
+    }
+    
+    // 清空所有点赞
+    clearAllLikes() {
+        this.likes = [];
+        this.updateLikesPreview();
+        this.updateMomentLikes();
+    }
+    
+    // 更新点赞预览区域
+    updateLikesPreview() {
+        const previewContainer = document.getElementById('likes-preview');
+        previewContainer.innerHTML = '';
+        
+        this.likes.forEach(like => {
+            const likeItem = document.createElement('div');
+            likeItem.className = 'preview-like-item';
+            
+            const nickname = document.createElement('span');
+            nickname.className = 'preview-like-nickname';
+            nickname.textContent = like.nickname;
+            
+            const removeBtn = document.createElement('button');
+            removeBtn.className = 'preview-like-remove';
+            removeBtn.innerHTML = '×';
+            removeBtn.onclick = () => this.removeLike(like.id);
+            
+            likeItem.appendChild(nickname);
+            likeItem.appendChild(removeBtn);
+            previewContainer.appendChild(likeItem);
+        });
+    }
+    
+    // 更新朋友圈点赞显示
+    updateMomentLikes() {
+        const container = document.getElementById('moment-likes');
+        container.innerHTML = '';
+        
+        if (this.likes.length === 0) {
+            this.updateInteractionsVisibility();
+            return;
+        }
+        
+        // 添加点赞图标
+        const icon = document.createElement('span');
+        icon.className = 'likes-icon';
+        icon.textContent = '❤️';
+        container.appendChild(icon);
+        
+        // 添加点赞者昵称
+        this.likes.forEach((like, index) => {
+            const nickname = document.createElement('span');
+            nickname.className = 'like-nickname';
+            nickname.textContent = like.nickname;
+            container.appendChild(nickname);
+            
+            // 添加分隔符（除了最后一个）
+            if (index < this.likes.length - 1) {
+                const separator = document.createElement('span');
+                separator.className = 'like-separator';
+                separator.textContent = ', ';
+                container.appendChild(separator);
+            }
+        });
+        
+        this.updateInteractionsVisibility();
+    }
+    
+    // 更新评论预览区域
+    updateCommentsPreview() {
+        const previewContainer = document.getElementById('comments-preview');
+        previewContainer.innerHTML = '';
+        
+        this.comments.forEach(comment => {
+            const commentItem = document.createElement('div');
+            commentItem.className = 'preview-comment-item';
+            
+            const nickname = document.createElement('span');
+            nickname.className = 'preview-comment-nickname';
+            nickname.textContent = comment.nickname + ':';
+            
+            const content = document.createElement('span');
+            content.className = 'preview-comment-content';
+            content.textContent = comment.content;
+            
+            const removeBtn = document.createElement('button');
+            removeBtn.className = 'preview-comment-remove';
+            removeBtn.innerHTML = '×';
+            removeBtn.onclick = () => this.removeComment(comment.id);
+            
+            commentItem.appendChild(nickname);
+            commentItem.appendChild(content);
+            commentItem.appendChild(removeBtn);
+            previewContainer.appendChild(commentItem);
+        });
+    }
+    
+    // 更新朋友圈评论显示
+    updateMomentComments() {
+        const container = document.getElementById('moment-comments');
+        container.innerHTML = '';
+        
+        if (this.comments.length === 0) {
+            this.updateInteractionsVisibility();
+            return;
+        }
+        
+        this.comments.forEach(comment => {
+            const commentDiv = document.createElement('div');
+            commentDiv.className = 'moment-comment';
+            
+            const nickname = document.createElement('span');
+            nickname.className = 'comment-nickname';
+            nickname.textContent = comment.nickname;
+            
+            const content = document.createElement('span');
+            content.className = 'comment-content';
+            content.textContent = ': ' + comment.content;
+            
+            commentDiv.appendChild(nickname);
+            commentDiv.appendChild(content);
+            container.appendChild(commentDiv);
+        });
+        
+        this.updateInteractionsVisibility();
+    }
+    
+    // 更新互动区域的显示状态
+    updateInteractionsVisibility() {
+        const interactionsContainer = document.getElementById('moment-interactions');
+        const likesContainer = document.getElementById('moment-likes');
+        const commentsContainer = document.getElementById('moment-comments');
+        const divider = document.getElementById('interaction-divider');
+        
+        const hasLikes = this.likes.length > 0;
+        const hasComments = this.comments.length > 0;
+        
+        // 如果既没有点赞也没有评论，隐藏整个互动区域
+        if (!hasLikes && !hasComments) {
+            interactionsContainer.style.display = 'none';
+            return;
+        }
+        
+        // 显示互动区域
+        interactionsContainer.style.display = 'block';
+        
+        // 控制分隔线的显示：只有当既有点赞又有评论时才显示
+        if (hasLikes && hasComments) {
+            divider.style.display = 'block';
+        } else {
+            divider.style.display = 'none';
+        }
+        
+        // 调整点赞区域的下边距
+        if (hasLikes && !hasComments) {
+            likesContainer.style.paddingBottom = '8px';
+        } else {
+            likesContainer.style.paddingBottom = '0';
+        }
     }
     
     // 更新图片预览区域
@@ -261,6 +492,46 @@ class WechatMomentGenerator {
         // 绑定清空图片按钮
         document.getElementById('clear-images-btn').addEventListener('click', () => {
             this.clearAllImages();
+        });
+        
+        // 绑定添加点赞按钮
+        document.getElementById('add-like-btn').addEventListener('click', () => {
+            const nickname = document.getElementById('like-nickname').value;
+            this.addLike(nickname);
+        });
+        
+        // 绑定点赞输入框回车事件
+        document.getElementById('like-nickname').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const nickname = document.getElementById('like-nickname').value;
+                this.addLike(nickname);
+            }
+        });
+        
+        // 绑定清空点赞按钮
+        document.getElementById('clear-likes-btn').addEventListener('click', () => {
+            this.clearAllLikes();
+        });
+        
+        // 绑定添加评论按钮
+        document.getElementById('add-comment-btn').addEventListener('click', () => {
+            const nickname = document.getElementById('comment-nickname').value;
+            const content = document.getElementById('comment-content').value;
+            this.addComment(nickname, content);
+        });
+        
+        // 绑定评论输入框回车事件
+        document.getElementById('comment-content').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const nickname = document.getElementById('comment-nickname').value;
+                const content = document.getElementById('comment-content').value;
+                this.addComment(nickname, content);
+            }
+        });
+        
+        // 绑定清空评论按钮
+        document.getElementById('clear-comments-btn').addEventListener('click', () => {
+            this.clearAllComments();
         });
         
         // 绑定生成按钮

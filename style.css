@@ -158,6 +158,193 @@ button:hover {
     background: #ff3742;
 }
 
+/* 评论编辑器样式 */
+.comments-editor {
+    margin-top: 10px;
+}
+
+.comment-input-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.comment-nickname-input {
+    flex: 1;
+    min-width: 120px;
+}
+
+.comment-content-input {
+    flex: 2;
+}
+
+.add-comment-btn {
+    background: #07C160;
+    color: white;
+    border: none;
+    padding: 12px 15px;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    white-space: nowrap;
+    width: auto;
+}
+
+.add-comment-btn:hover {
+    background: #06ae56;
+}
+
+.comments-preview {
+    background: #f9f9f9;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+    min-height: 60px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.comments-preview:empty::before {
+    content: "暂无评论";
+    color: #999;
+    font-style: italic;
+}
+
+.preview-comment-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 8px;
+    padding: 5px;
+    background: white;
+    border-radius: 3px;
+    border: 1px solid #eee;
+}
+
+.preview-comment-nickname {
+    color: #576b95;
+    font-weight: bold;
+    font-size: 14px;
+    min-width: 60px;
+}
+
+.preview-comment-content {
+    color: #333;
+    font-size: 14px;
+    flex: 1;
+}
+
+.preview-comment-remove {
+    background: #ff4757;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.clear-comments-btn {
+    background: #ff4757;
+    margin-top: 10px;
+}
+
+.clear-comments-btn:hover {
+    background: #ff3742;
+}
+
+/* 点赞编辑器样式 */
+.likes-editor {
+    margin-top: 10px;
+}
+
+.like-input-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.like-nickname-input {
+    flex: 1;
+}
+
+.add-like-btn {
+    background: #07C160;
+    color: white;
+    border: none;
+    padding: 12px 15px;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    white-space: nowrap;
+    width: auto;
+}
+
+.add-like-btn:hover {
+    background: #06ae56;
+}
+
+.likes-preview {
+    background: #f9f9f9;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+    min-height: 60px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.likes-preview:empty::before {
+    content: "暂无点赞";
+    color: #999;
+    font-style: italic;
+}
+
+.preview-like-item {
+    display: inline-block;
+    margin: 2px 5px 2px 0;
+    padding: 3px 8px;
+    background: white;
+    border-radius: 12px;
+    border: 1px solid #eee;
+    font-size: 14px;
+    position: relative;
+}
+
+.preview-like-nickname {
+    color: #576b95;
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.preview-like-remove {
+    background: #ff4757;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    font-size: 10px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 5px;
+}
+
+.clear-likes-btn {
+    background: #ff4757;
+    margin-top: 10px;
+}
+
+.clear-likes-btn:hover {
+    background: #ff3742;
+}
+
 /* 朋友圈预览样式 */
 .wechat-moment {
     width: 420px;
@@ -308,6 +495,81 @@ button:hover {
 
 .moment-images {
     margin-bottom: 15px;
+}
+
+/* 朋友圈互动区域样式 */
+.moment-interactions {
+    margin-bottom: 15px;
+    background: #f7f7f7;
+    border-radius: 5px;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.moment-interactions:empty {
+    display: none;
+}
+
+/* 朋友圈点赞样式 */
+.moment-likes {
+    padding: 8px 12px 0 12px;
+}
+
+.moment-likes:empty {
+    display: none;
+}
+
+.likes-icon {
+    color: #576b95;
+    margin-right: 3px;
+    font-size: 14px;
+}
+
+.like-nickname {
+    color: #576b95;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.like-separator {
+    color: #999;
+}
+
+/* 分隔线样式 */
+.interaction-divider {
+    height: 1px;
+    background: #e5e5e5;
+    margin: 8px 12px;
+}
+
+.interaction-divider:empty {
+    display: none;
+}
+
+/* 朋友圈评论样式 */
+.moment-comments {
+    padding: 0 12px 8px 12px;
+}
+
+.moment-comments:empty {
+    display: none;
+}
+
+.moment-comment {
+    margin-bottom: 6px;
+}
+
+.moment-comment:last-child {
+    margin-bottom: 0;
+}
+
+.comment-nickname {
+    color: #576b95;
+    font-weight: bold;
+}
+
+.comment-content {
+    color: #333;
 }
 
 /* 图片网格布局 */

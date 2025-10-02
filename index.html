@@ -48,6 +48,31 @@
                 <button type="button" class="clear-images-btn" id="clear-images-btn">清空所有图片</button>
             </div>
             
+            <div class="form-group">
+                <label for="likes-section">点赞设置：</label>
+                <div class="likes-editor">
+                    <div class="like-input-group">
+                        <input type="text" id="like-nickname" placeholder="点赞者昵称" class="like-nickname-input">
+                        <button type="button" id="add-like-btn" class="add-like-btn">添加点赞</button>
+                    </div>
+                    <div class="likes-preview" id="likes-preview"></div>
+                    <button type="button" class="clear-likes-btn" id="clear-likes-btn">清空所有点赞</button>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="comments-section">评论设置：</label>
+                <div class="comments-editor">
+                    <div class="comment-input-group">
+                        <input type="text" id="comment-nickname" placeholder="评论者昵称" class="comment-nickname-input">
+                        <input type="text" id="comment-content" placeholder="评论内容" class="comment-content-input">
+                        <button type="button" id="add-comment-btn" class="add-comment-btn">添加</button>
+                    </div>
+                    <div class="comments-preview" id="comments-preview"></div>
+                    <button type="button" class="clear-comments-btn" id="clear-comments-btn">清空所有评论</button>
+                </div>
+            </div>
+            
             <button id="generate-btn">生成截图</button>
             
             <div class="instructions">
@@ -102,6 +127,15 @@
                             <div class="moment-text" id="moment-text">这里输入朋友圈内容...</div>
                             <div class="moment-images" id="image-container">
                                 <!-- 图片会动态插入到这里 -->
+                            </div>
+                            <div class="moment-interactions" id="moment-interactions">
+                                <div class="moment-likes" id="moment-likes">
+                                    <!-- 点赞会动态插入到这里 -->
+                                </div>
+                                <div class="interaction-divider" id="interaction-divider"></div>
+                                <div class="moment-comments" id="moment-comments">
+                                    <!-- 评论会动态插入到这里 -->
+                                </div>
                             </div>
                             <div class="moment-meta">
                                 <span class="time">刚刚</span>
