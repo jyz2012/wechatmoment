@@ -361,17 +361,14 @@ button:hover {
     top: 20px;
     width: 40px;
     height: 40px;
-    background: rgba(0, 0, 0, 0.3);
     color: white;
-    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 20px;
     font-weight: bold;
     z-index: 30;
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
 }
 
 .back-btn {
@@ -380,6 +377,12 @@ button:hover {
 
 .camera-btn {
     right: 20px;
+}
+
+.camera-btn img {
+    width: 24px;
+    height: 24px;
+    filter: drop-shadow(1px 1px 3px rgba(0,0,0,0.8));
 }
 
 /* 用户信息区域 */
@@ -520,9 +523,11 @@ button:hover {
 }
 
 .likes-icon {
-    color: #576b95;
+    width: 15px;
+    height: 14px;
     margin-right: 3px;
-    font-size: 14px;
+    vertical-align: middle;
+    display: inline-block;
 }
 
 .like-nickname {
@@ -539,7 +544,7 @@ button:hover {
 .interaction-divider {
     height: 1px;
     background: #e5e5e5;
-    margin: 8px 12px;
+    margin: 8px 0;
 }
 
 .interaction-divider:empty {

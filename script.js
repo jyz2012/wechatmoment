@@ -214,9 +214,10 @@ class WechatMomentGenerator {
         }
         
         // 添加点赞图标
-        const icon = document.createElement('span');
+        const icon = document.createElement('img');
         icon.className = 'likes-icon';
-        icon.textContent = '❤️';
+        icon.src = 'assets/like_light.jpg';
+        icon.alt = '点赞';
         container.appendChild(icon);
         
         // 添加点赞者昵称
@@ -325,9 +326,9 @@ class WechatMomentGenerator {
         
         // 调整点赞区域的下边距
         if (hasLikes && !hasComments) {
-            likesContainer.style.paddingBottom = '8px';
+            likesContainer.style.padding = '8px 12px';
         } else {
-            likesContainer.style.paddingBottom = '0';
+            likesContainer.style.padding = '8px 12px 0 12px';
         }
     }
     
