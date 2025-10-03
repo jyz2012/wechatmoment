@@ -50,6 +50,18 @@
             </div>
             
             <div class="form-group">
+                <label for="time-setting">发布时间：</label>
+                <div class="time-setting">
+                    <input type="number" id="time-value" placeholder="数字" min="1" max="999" value="1" class="time-value-input">
+                    <select id="time-unit" class="time-unit-select">
+                        <option value="分钟前" selected>分钟前</option>
+                        <option value="小时前">小时前</option>
+                        <option value="天前">天前</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-group">
                 <label for="image-upload">上传图片（最多9张）：</label>
                 <input type="file" id="image-upload" class="file-input" accept="image/*" multiple>
                 <div class="image-preview" id="image-preview"></div>
@@ -146,8 +158,7 @@
                                 </div>
                             </div>
                             <div class="moment-meta">
-                                <span class="time">刚刚</span>
-                                <span class="delete">删除</span>
+                                <span class="time" id="moment-time">1分钟前</span>
                             </div>
                         </div>
                     </div>

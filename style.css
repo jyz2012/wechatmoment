@@ -345,6 +345,33 @@ button:hover {
     background: #ff3742;
 }
 
+/* 时间设置样式 */
+.time-setting {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.time-value-input {
+    width: 80px;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-family: inherit;
+    font-size: 16px;
+}
+
+.time-unit-select {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-family: inherit;
+    font-size: 16px;
+    background: white;
+    cursor: pointer;
+}
+
 /* 朋友圈预览样式 */
 .wechat-moment {
     width: 420px;

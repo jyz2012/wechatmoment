@@ -58,6 +58,19 @@ class WechatMomentGenerator {
         document.getElementById('moment-text').textContent = content;
     }
     
+    // 更新时间显示
+    updateTime() {
+        const timeValue = document.getElementById('time-value').value;
+        const timeUnit = document.getElementById('time-unit').value;
+        const timeElement = document.getElementById('moment-time');
+        
+        if (!timeValue || timeValue === '') {
+            timeElement.textContent = '1分钟前';
+        } else {
+            timeElement.textContent = timeValue + timeUnit;
+        }
+    }
+    
     // 添加图片到上传列表
     addImages(files) {
         const maxImages = 9;
@@ -483,6 +496,15 @@ class WechatMomentGenerator {
         // 绑定内容输入
         document.getElementById('content-input').addEventListener('input', (e) => {
             this.updateText(e.target.value || '这里输入朋友圈内容...');
+        });
+        
+        // 绑定时间设置
+        document.getElementById('time-value').addEventListener('input', () => {
+            this.updateTime();
+        });
+        
+        document.getElementById('time-unit').addEventListener('change', () => {
+            this.updateTime();
         });
         
         // 绑定图片上传
