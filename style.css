@@ -149,6 +149,15 @@ button:hover {
     background: #06ae56;
 }
 
+.clear-all-btn {
+    background: #ff6b6b;
+    margin-top: 15px;
+}
+
+.clear-all-btn:hover {
+    background: #ff5252;
+}
+
 .clear-images-btn {
     background: #ff4757;
     margin-top: 10px;
@@ -658,6 +667,14 @@ button:hover {
     color: #999;
     display: flex;
     gap: 18px;
+}
+
+.location {
+    color: #576b95;
+}
+
+.location:empty {
+    display: none;
 }
 
 .instructions {

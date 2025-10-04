@@ -62,6 +62,11 @@
             </div>
             
             <div class="form-group">
+                <label for="location-input">发布位置：</label>
+                <input type="text" id="location-input" placeholder="输入位置信息（可选）">
+            </div>
+            
+            <div class="form-group">
                 <label for="image-upload">上传图片（最多9张）：</label>
                 <input type="file" id="image-upload" class="file-input" accept="image/*" multiple>
                 <div class="image-preview" id="image-preview"></div>
@@ -95,6 +100,8 @@
             
             <button id="generate-btn">生成截图</button>
             
+            <button id="clear-all-btn" class="clear-all-btn">清空所有设置</button>
+            
             <div class="instructions">
                 <h3>使用说明</h3>
                 <ul>
@@ -103,7 +110,6 @@
                     <li>支持多张图片上传，自动智能布局</li>
                     <li>单张图片按原比例显示，多张图片裁剪成正方形</li>
                     <li>点击"生成截图"按钮保存图片</li>
-                    <li>图片将保存在您的设备中</li>
                 </ul>
             </div>
         </div>
@@ -159,6 +165,7 @@
                             </div>
                             <div class="moment-meta">
                                 <span class="time" id="moment-time">1分钟前</span>
+                                <span class="location" id="moment-location"></span>
                             </div>
                         </div>
                     </div>

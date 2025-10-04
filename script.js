@@ -7,6 +7,7 @@ class WechatMomentGenerator {
         this.initEventListeners();
         this.setDefaultAvatar();
         this.updateInteractionsVisibility(); // 初始化时隐藏互动区域
+        this.checkAndLoadSavedData(); // 检查并询问是否加载保存的数据
     }
     
     // 设置默认头像
@@ -20,11 +21,13 @@ class WechatMomentGenerator {
     updateNickname(nickname) {
         document.getElementById('user-nickname').textContent = nickname;
         document.getElementById('author-name').textContent = nickname;
+        this.saveData(); // 保存数据
     }
     
     // 更新个性签名
     updateSignature(signature) {
         document.getElementById('user-signature').textContent = signature || '个性签名';
+        this.saveData(); // 保存数据
     }
     
     // 更新头像
@@ -56,6 +59,7 @@ class WechatMomentGenerator {
     // 更新文字内容
     updateText(content) {
         document.getElementById('moment-text').textContent = content;
+        this.saveData(); // 保存数据
     }
     
     // 更新时间显示
@@ -68,6 +72,122 @@ class WechatMomentGenerator {
             timeElement.textContent = '1分钟前';
         } else {
             timeElement.textContent = timeValue + timeUnit;
+        }
+        this.saveData(); // 保存数据
+    }
+    
+    // 更新位置显示
+    updateLocation(location) {
+        const locationElement = document.getElementById('moment-location');
+        locationElement.textContent = location || '';
+        this.saveData(); // 保存数据
+    }
+    
+    // 保存数据到localStorage
+    saveData() {
+        const data = {
+            nickname: document.getElementById('nickname-input').value,
+            signature: document.getElementById('signature-input').value,
+            content: document.getElementById('content-input').value,
+            timeValue: document.getElementById('time-value').value,
+            timeUnit: document.getElementById('time-unit').value,
+            location: document.getElementById('location-input').value,
+            likes: this.likes,
+            comments: this.comments
+        };
+        localStorage.setItem('wechatMomentData', JSON.stringify(data));
+    }
+    
+    // 检查并询问是否加载保存的数据
+    checkAndLoadSavedData() {
+        const savedData = localStorage.getItem('wechatMomentData');
+        if (savedData) {
+            try {
+                const data = JSON.parse(savedData);
+                // 检查是否有实际的用户数据（不只是默认值）
+                const hasUserData = data.nickname || data.signature || data.content || 
+                                  data.location || (data.likes && data.likes.length > 0) || 
+                                  (data.comments && data.comments.length > 0);
+                
+                if (hasUserData) {
+                    const shouldRestore = confirm('检测到之前保存的设置，是否还原？');
+                    
+                    if (shouldRestore) {
+                        this.loadSavedData(data);
+                    } else {
+                        // 用户选择不还原，清空历史记录
+                        localStorage.removeItem('wechatMomentData');
+                    }
+                }
+            } catch (error) {
+                console.error('检查保存数据失败:', error);
+                // 数据损坏，直接清除
+                localStorage.removeItem('wechatMomentData');
+            }
+        }
+    }
+    
+    // 从localStorage加载数据
+    loadSavedData(data = null) {
+        if (!data) {
+            const savedData = localStorage.getItem('wechatMomentData');
+            if (!savedData) return;
+            try {
+                data = JSON.parse(savedData);
+            } catch (error) {
+                console.error('加载保存数据失败:', error);
+                return;
+            }
+        }
+        
+        // 恢复表单数据
+        if (data.nickname) {
+            document.getElementById('nickname-input').value = data.nickname;
+            this.updateNickname(data.nickname);
+        }
+        if (data.signature) {
+            document.getElementById('signature-input').value = data.signature;
+            this.updateSignature(data.signature);
+        }
+        if (data.content) {
+            document.getElementById('content-input').value = data.content;
+            this.updateText(data.content);
+        }
+        if (data.timeValue) {
+            document.getElementById('time-value').value = data.timeValue;
+        }
+        if (data.timeUnit) {
+            document.getElementById('time-unit').value = data.timeUnit;
+        }
+        if (data.location) {
+            document.getElementById('location-input').value = data.location;
+            this.updateLocation(data.location);
+        }
+        
+        // 恢复点赞和评论
+        if (data.likes) {
+            this.likes = data.likes;
+            this.updateLikesPreview();
+            this.updateMomentLikes();
+        }
+        if (data.comments) {
+            this.comments = data.comments;
+            this.updateCommentsPreview();
+            this.updateMomentComments();
+        }
+        
+        // 更新时间显示
+        this.updateTime();
+    }
+    
+    // 清空所有数据
+    clearAllData() {
+        if (confirm('确定要清空所有设置吗？此操作不可撤销。')) {
+            // 清空localStorage
+            localStorage.removeItem('wechatMomentData');
+            
+            // 刷新页面
+            window.location.reload();
         }
     }
     
@@ -132,6 +252,7 @@ class WechatMomentGenerator {
         this.comments.push(comment);
         this.updateCommentsPreview();
         this.updateMomentComments();
+        this.saveData(); // 保存数据
         
         // 清空输入框
         document.getElementById('comment-nickname').value = '';
@@ -143,6 +264,7 @@ class WechatMomentGenerator {
         this.comments = this.comments.filter(comment => comment.id !== commentId);
         this.updateCommentsPreview();
         this.updateMomentComments();
+        this.saveData(); // 保存数据
     }
     
     // 清空所有评论
@@ -150,6 +272,7 @@ class WechatMomentGenerator {
         this.comments = [];
         this.updateCommentsPreview();
         this.updateMomentComments();
+        this.saveData(); // 保存数据
     }
     
     // 添加点赞
@@ -173,6 +296,7 @@ class WechatMomentGenerator {
         this.likes.push(like);
         this.updateLikesPreview();
         this.updateMomentLikes();
+        this.saveData(); // 保存数据
         
         // 清空输入框
         document.getElementById('like-nickname').value = '';
@@ -183,6 +307,7 @@ class WechatMomentGenerator {
         this.likes = this.likes.filter(like => like.id !== likeId);
         this.updateLikesPreview();
         this.updateMomentLikes();
+        this.saveData(); // 保存数据
     }
     
     // 清空所有点赞
@@ -190,6 +315,7 @@ class WechatMomentGenerator {
         this.likes = [];
         this.updateLikesPreview();
         this.updateMomentLikes();
+        this.saveData(); // 保存数据
     }
     
     // 更新点赞预览区域
@@ -507,6 +633,11 @@ class WechatMomentGenerator {
             this.updateTime();
         });
         
+        // 绑定位置输入
+        document.getElementById('location-input').addEventListener('input', (e) => {
+            this.updateLocation(e.target.value);
+        });
+        
         // 绑定图片上传
         document.getElementById('image-upload').addEventListener('change', (e) => {
             this.addImages(e.target.files);
@@ -560,6 +691,11 @@ class WechatMomentGenerator {
         // 绑定生成按钮
         document.getElementById('generate-btn').addEventListener('click', () => {
             this.generateScreenshot();
+        });
+        
+        // 绑定清空所有按钮
+        document.getElementById('clear-all-btn').addEventListener('click', () => {
+            this.clearAllData();
         });
     }
 }
