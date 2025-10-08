@@ -4,6 +4,7 @@ class WechatMomentGenerator {
         this.uploadedImages = []; // 存储所有上传的图片
         this.comments = []; // 存储所有评论
         this.likes = []; // 存储所有点赞
+        this.isTextExpanded = false; // 记录文字是否展开状态
         this.initEventListeners();
         this.setDefaultAvatar();
         this.updateInteractionsVisibility(); // 初始化时隐藏互动区域
@@ -58,8 +59,46 @@ class WechatMomentGenerator {
     
     // 更新文字内容
     updateText(content) {
-        document.getElementById('moment-text').textContent = content;
+        const textElement = document.getElementById('moment-text');
+        textElement.textContent = content;
+        this.checkTextLength();
         this.saveData(); // 保存数据
+    }
+    
+    // 检查文字长度并决定是否显示收起按钮
+    checkTextLength() {
+        const textElement = document.getElementById('moment-text');
+        const collapseBtn = document.getElementById('collapse-btn');
+        
+        // 临时移除限制来测量真实高度
+        const wasCollapsed = textElement.classList.contains('collapsed');
+        textElement.classList.remove('collapsed');
+        
+        // 计算行数（基于行高1.4 * 字体大小15px = 21px每行）
+        const lineHeight = 21; // 15px * 1.4
+        const textHeight = textElement.scrollHeight;
+        const lines = Math.ceil(textHeight / lineHeight);
+        
+        if (lines > 5) {
+            // 超过5行，显示收起按钮
+            collapseBtn.style.display = 'block';
+            
+            // 根据用户之前的选择决定是否折叠
+            if (this.isTextExpanded) {
+                // 用户选择了展开，保持展开状态
+                textElement.classList.remove('collapsed');
+                collapseBtn.textContent = '收起';
+            } else {
+                // 默认折叠状态
+                textElement.classList.add('collapsed');
+                collapseBtn.textContent = '全文';
+            }
+        } else {
+            // 不超过5行，隐藏收起按钮，重置展开状态
+            textElement.classList.remove('collapsed');
+            collapseBtn.style.display = 'none';
+            this.isTextExpanded = false;
+        }
     }
     
     // 更新时间显示
@@ -151,7 +190,11 @@ class WechatMomentGenerator {
         }
         if (data.content) {
             document.getElementById('content-input').value = data.content;
-            this.updateText(data.content);
+            document.getElementById('moment-text').textContent = data.content;
+            // 延迟检查文字长度，确保DOM已渲染
+            setTimeout(() => {
+                this.checkTextLength();
+            }, 100);
         }
         if (data.timeValue) {
             document.getElementById('time-value').value = data.timeValue;
@@ -696,6 +739,24 @@ class WechatMomentGenerator {
         // 绑定清空所有按钮
         document.getElementById('clear-all-btn').addEventListener('click', () => {
             this.clearAllData();
+        });
+        
+        // 绑定收起按钮点击事件
+        document.getElementById('collapse-btn').addEventListener('click', () => {
+            const textElement = document.getElementById('moment-text');
+            const collapseBtn = document.getElementById('collapse-btn');
+            
+            if (textElement.classList.contains('collapsed')) {
+                // 当前是收起状态，点击展开
+                textElement.classList.remove('collapsed');
+                collapseBtn.textContent = '收起';
+                this.isTextExpanded = true;
+            } else {
+                // 当前是展开状态，点击收起
+                textElement.classList.add('collapsed');
+                collapseBtn.textContent = '全文';
+                this.isTextExpanded = false;
+            }
         });
     }
 }

@@ -530,6 +530,29 @@ button:hover {
     margin-bottom: 15px;
     word-break: break-word;
     color: #333;
+    white-space: pre-wrap;
+}
+
+/* 文字收起功能 */
+.moment-text.collapsed {
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-bottom: 8px;
+}
+
+.collapse-btn {
+    color: #576b95;
+    font-size: 15px;
+    cursor: pointer;
+    margin-bottom: 15px;
+    margin-top: 5px;
+    display: block;
+}
+
+.collapse-btn:hover {
+    text-decoration: underline;
 }
 
 .moment-images {
